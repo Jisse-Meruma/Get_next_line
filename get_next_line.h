@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 00:15:49 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/24 14:52:46 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/10/25 12:17:31 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 # include <stdio.h>
 char	*get_next_line(int fd);
 
-void	str_cat(char *dest, char *src);
-void	str_cpy(char *dest, char *src);
-void	last_cpy(char *dest, char *src);
+char	*malloc_creation(int *n);
+int		line_cat(char *dest, char *src);
 
 #endif 
