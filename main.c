@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 11:11:23 by jmeruma           #+#    #+#             */
-/*   Updated: 2022/10/26 17:40:20 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/10/27 17:07:39 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,11 @@ int	main(void)
 
 	i = open("test.txt", O_RDONLY);
 	ptr = get_next_line(i);
-	printf("String = %s", ptr);
-	ptr = get_next_line(i);
-	printf("String = %s", ptr);
-	ptr = get_next_line(i);
-	printf("String = %s", ptr);
-	ptr = get_next_line(i);
-	printf("String = %s", ptr);
-	while (!ptr)
+	while (ptr != NULL)
 	{
+		printf("String:\t|%s", ptr);
+		free(ptr);
 		ptr = get_next_line(i);
-		printf("String = %s", ptr);
+		
 	}
-	close(i);
 }
