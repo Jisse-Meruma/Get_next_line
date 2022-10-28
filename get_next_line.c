@@ -6,84 +6,84 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 20:52:21 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/27 17:30:12 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/10/28 13:35:48 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 
-char	*line_assembly(char *buffer, int fd, int char_read, int *flag);
+char	*line_assembly(char *buffer, int fd, char *line, int *size_line);
 char	*line_dup(char	*line, int *size_line);
 int		char_checker(char *buffer);
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
-	int			flag;
 	char		*line;
-	int			read_count;
+	int			size_line;
+	static char	buffer[BUFFER_SIZE + 1];
 
-	read_count = 1;
-	flag = 0;
-	if (fd < 1)
+	if (fd < 0)
 		return (NULL);
-	if (*buffer != 0)
-		read_count = ft_strlen(buffer);
-	line = line_assembly(buffer, fd, read_count, &flag);
+	size_line = BUFFER_SIZE;
+	line = calloc_creation(&size_line);
 	if (!line)
 		return (NULL);
+	line = line_assembly(buffer, fd, line, &size_line);
+	if (!line)
+	{
+		buffer[0] = '\0';
+		return (NULL);
+	}
 	buffer_trim(buffer);
 	return (line);
 }
 
-char	*line_assembly(char *buffer, int fd, int read_count, int *flag)
+char	*line_assembly(char *buffer, int fd, char *line, int *size_line)
 {
 	int		counter;
-	int		size_line;
-	char	*line;
-	
+	int		read_count;
+
 	counter = 0;
-	size_line = BUFFER_SIZE;
-	line = malloc_creation(&size_line);
 	while (char_checker(buffer) != 1)
 	{
 		if (*buffer != 0)
-			counter = line_cat(line, buffer, counter, read_count);
+			counter = line_cat(line, buffer, counter, ft_strlen(buffer));
 		read_count = read(fd, buffer, BUFFER_SIZE);
 		if (read_count == -1)
 			return (free(line), NULL);
 		if (read_count < BUFFER_SIZE)
 		{
-			*flag = 1;
-			// IS ER WEL GENOEG SPACE FOR THE CAT..... 
-			counter = line_cat(line, buffer, counter, read_count);
+			if (read_count == 0 && *line == '\0')
+				return (free(line), NULL);
+			buffer[read_count] = '\0';
+			counter = line_cat(line, buffer, counter, ft_strlen(buffer));
 			return (line);
 		}
-		if (counter >= (size_line - BUFFER_SIZE) && *buffer != 0)
-			line = line_dup(line, &size_line);
+		if (counter >= (*size_line - BUFFER_SIZE) && *buffer != 0)
+			line = line_dup(line, size_line);
 		if (!line)
 			return (NULL);
 	}
-	counter = line_cat(line, buffer, counter, read_count);
-	return (line);
+	return (line_cat(line, buffer, counter, ft_strlen(buffer)), line);
 }
 
 char	*line_dup(char	*line, int *size_line)
 {
 	int		i;
+	int		size_old;
 	char	*line_v2;
 
 	i = 0;
-	line_v2 = malloc_creation(size_line);
+	size_old = *size_line;
+	line_v2 = calloc_creation(size_line);
 	if (!line_v2)
 		return (NULL);
-	while (line[i])
+	while (i < size_old)
 	{
 		line_v2[i] = line[i];
 		i++;
 	}
-	line_v2[i] = line[i];
 	free(line);
 	return (line_v2);
 }
