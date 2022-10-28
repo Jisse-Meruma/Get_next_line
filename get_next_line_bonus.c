@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 20:52:21 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/28 13:43:17 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/10/28 13:48:27 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*get_next_line(int fd)
 {
 	char		*line;
 	int			size_line;
-	static char	buffer[BUFFER_SIZE + 1];
+	static char	buffer[4096][BUFFER_SIZE + 1];
 
 	if (fd < 0)
 		return (NULL);
@@ -86,12 +86,12 @@ char	*get_next_line(int fd)
 	line = calloc_creation(&size_line);
 	if (!line)
 		return (NULL);
-	line = line_assembly(buffer, fd, line, &size_line);
+	line = line_assembly(buffer[fd], fd, line, &size_line);
 	if (!line)
 	{
-		buffer[0] = '\0';
+		buffer[fd][0] = '\0';
 		return (NULL);
 	}
-	buffer_trim(buffer);
+	buffer_trim(buffer[fd]);
 	return (line);
 }
