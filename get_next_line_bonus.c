@@ -6,13 +6,20 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 20:52:21 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/28 13:48:27 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/10/28 17:21:24 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <limits.h>
 #include <fcntl.h>
 
+/**
+ * @brief 
+ * Line_dup makes a string double the size of the one before. 
+ * also make sure to free() the old line
+ * other wise you'll have leaks :(
+ */
 char	*line_dup(char	*line, int *size_line)
 {
 	int		i;
@@ -33,6 +40,11 @@ char	*line_dup(char	*line, int *size_line)
 	return (line_v2);
 }
 
+/**
+ * @brief 
+ * This is the function that tells me if im at the end of a line.
+ * if so i'll send a signal that i detect in my while loop to break the loop
+ */
 int	char_checker(char *buffer)
 {
 	int	i;
@@ -45,6 +57,18 @@ int	char_checker(char *buffer)
 	return (0);
 }
 
+/**
+ * @brief
+ * First we have to see if the buffer exist.. aka is this the first call..
+ * if so.. then we have to concatinate the old buffer to the new line.
+ * Then well read into the buffer array with the amount of BUFFER_SIZE 
+ * that is difined at compiling time. its very handy to keep count 
+ * how many the read function actually read. 
+ * so we can use this at are advantage. Then we have our read checks 
+ * that tell me if the read failed or that we read the last chars
+ * Then i check if i have to increase the size of the actual line 
+ * if so i double the sizeof(line) that it was before :D.
+ */
 char	*line_assembly(char *buffer, int fd, char *line, int *size_line)
 {
 	int		counter;
@@ -74,13 +98,21 @@ char	*line_assembly(char *buffer, int fd, char *line, int *size_line)
 	return (line_cat(line, buffer, counter, ft_strlen(buffer)), line);
 }
 
+/**
+ * @brief 
+ * the Var line is the line wich we return after we found a (newline)
+ * or are at the end of a file. if we are at the end of the file 
+ * we have to make sure that the buffer array will be reset.
+ * if we are not at the end of the file we have to trim the buffer 
+ * so we can use it next time we call the function
+ */
 char	*get_next_line(int fd)
 {
 	char		*line;
 	int			size_line;
-	static char	buffer[4096][BUFFER_SIZE + 1];
+	static char	buffer[OPEN_MAX][BUFFER_SIZE + 1];
 
-	if (fd < 0)
+	if (fd < 0 && fd <= OPEN_MAX)
 		return (NULL);
 	size_line = BUFFER_SIZE;
 	line = calloc_creation(&size_line);

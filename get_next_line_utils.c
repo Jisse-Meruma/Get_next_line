@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 00:15:46 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/28 11:06:10 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/10/28 17:26:56 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ char	*calloc_creation(int *size_line)
 	return (line);
 }
 
+/**
+ * @brief The functions buffer_trim allows me to change the string
+ * so that i can reuse it the next time the function is getting called
+ * ill go past the new-line then every char after the new-line will be
+ * copied to the beginning of the buffer to be concatinated to the next
+ * line if the function gets called again
+ * @param buffer 
+ */
 void	buffer_trim(char *buffer)
 {
 	int	b_index;
