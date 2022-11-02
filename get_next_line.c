@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 20:52:21 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/28 17:22:09 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/11/02 13:09:51 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	char_checker(char *buffer)
  * Then i check if i have to increase the size of the actual line 
  * if so i double the sizeof(line) that it was before :D.
  */
-char	*line_assembly(char *buffer, int fd, char *line, int *size_line)
+char	*line_assembly(char *buffer, int fd, char *line, int size_line)
 {
 	int		counter;
 	int		read_count;
@@ -79,18 +79,16 @@ char	*line_assembly(char *buffer, int fd, char *line, int *size_line)
 		if (*buffer != 0)
 			counter = line_cat(line, buffer, counter, ft_strlen(buffer));
 		read_count = read(fd, buffer, BUFFER_SIZE);
-		if (read_count == -1)
-			return (free(line), NULL);
 		if (read_count < BUFFER_SIZE)
 		{
-			if (read_count == 0 && *line == '\0')
+			if ((read_count == 0 && *line == '\0') || read_count == -1)
 				return (free(line), NULL);
 			buffer[read_count] = '\0';
 			counter = line_cat(line, buffer, counter, ft_strlen(buffer));
 			return (line);
 		}
-		if (counter >= (*size_line - BUFFER_SIZE) && *buffer != 0)
-			line = line_dup(line, size_line);
+		if (counter >= (size_line - BUFFER_SIZE) && *buffer != 0)
+			line = line_dup(line, &size_line);
 		if (!line)
 			return (NULL);
 	}
@@ -117,7 +115,7 @@ char	*get_next_line(int fd)
 	line = calloc_creation(&size_line);
 	if (!line)
 		return (NULL);
-	line = line_assembly(buffer, fd, line, &size_line);
+	line = line_assembly(buffer, fd, line, size_line);
 	if (!line)
 	{
 		buffer[0] = '\0';
