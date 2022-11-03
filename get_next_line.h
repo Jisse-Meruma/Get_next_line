@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 00:15:49 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/28 13:42:04 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/11/03 14:47:19 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ char	*get_next_line(int fd);
 int		ft_strlen(char *buffer);
 int		line_cat(char *line, char *buffer, int size_len, int read_count);
 void	buffer_trim(char *buffer);
+char	*malloc_trim(char *line);
 char	*calloc_creation(int *size_len);
 
 #endif

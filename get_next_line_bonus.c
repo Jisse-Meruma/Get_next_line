@@ -6,11 +6,11 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 20:52:21 by jisse             #+#    #+#             */
-/*   Updated: 2022/11/02 13:10:08 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/11/03 14:46:26 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <limits.h>
 #include <fcntl.h>
 
@@ -30,7 +30,7 @@ char	*line_dup(char	*line, int *size_line)
 	size_old = *size_line;
 	line_v2 = calloc_creation(size_line);
 	if (!line_v2)
-		return (NULL);
+		return (free(line), NULL);
 	while (i < size_old)
 	{
 		line_v2[i] = line[i];
@@ -123,5 +123,6 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	buffer_trim(buffer[fd]);
+	line = malloc_trim(line);
 	return (line);
 }

@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 00:15:46 by jisse             #+#    #+#             */
-/*   Updated: 2022/10/28 17:26:56 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/11/03 14:47:04 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,27 @@ void	buffer_trim(char *buffer)
 		b_reset++;
 	}
 	buffer[b_reset] = '\0';
+}
+
+char	*malloc_trim(char *line)
+{
+	int		i;
+	int		size;
+	char	*final_line;
+
+	i = 0;
+	size = ft_strlen(line);
+	final_line = malloc((sizeof(char) * size) + 1);
+	if (!final_line)
+		return (free(line), NULL);
+	while (line[i])
+	{
+		final_line[i] = line[i];
+		i++;
+	}
+	final_line[i] = '\0';
+	free(line);
+	return (final_line);
 }
 
 int	ft_strlen(char *buffer)
