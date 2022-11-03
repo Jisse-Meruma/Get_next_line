@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 00:15:46 by jisse             #+#    #+#             */
-/*   Updated: 2022/11/03 14:47:04 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/11/03 15:04:49 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	line_cat(char *line, char *buffer, int l_index, int read_count)
 		line[l_index] = '\n';
 		l_index++;
 	}
+	line[l_index] = '\0';
 	return (l_index);
 }
 
@@ -41,11 +42,7 @@ char	*calloc_creation(int *size_line)
 	line = malloc((*size_line) * sizeof(char) + 1);
 	if (!line)
 		return (NULL);
-	while (i <= *size_line)
-	{
-		line[i] = '\0';
-		i++;
-	}
+	line[0] = '\0';
 	return (line);
 }
 

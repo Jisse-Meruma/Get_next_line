@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 20:52:21 by jisse             #+#    #+#             */
-/*   Updated: 2022/11/03 14:46:43 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/11/03 15:16:43 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*line_assembly(char *buffer, int fd, char *line, int size_line)
 			if ((read_count == 0 && *line == '\0') || read_count == -1)
 				return (free(line), NULL);
 			buffer[read_count] = '\0';
-			counter = line_cat(line, buffer, counter, ft_strlen(buffer));
+			counter = line_cat(line, buffer, counter, read_count);
 			return (line);
 		}
 		if (counter >= (size_line - BUFFER_SIZE) && *buffer != 0)
@@ -114,7 +114,10 @@ char	*get_next_line(int fd)
 	size_line = BUFFER_SIZE;
 	line = calloc_creation(&size_line);
 	if (!line)
+	{
+		buffer[0] = '\0';
 		return (NULL);
+	}
 	line = line_assembly(buffer, fd, line, size_line);
 	if (!line)
 	{
@@ -123,5 +126,7 @@ char	*get_next_line(int fd)
 	}
 	buffer_trim(buffer);
 	line = malloc_trim(line);
+	if (!line)
+		buffer[0] = '\0';
 	return (line);
 }
