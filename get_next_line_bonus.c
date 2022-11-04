@@ -6,7 +6,7 @@
 /*   By: jmeruma <jmeruma@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 20:52:21 by jisse             #+#    #+#             */
-/*   Updated: 2022/11/03 15:11:38 by jmeruma          ###   ########.fr       */
+/*   Updated: 2022/11/04 10:34:44 by jmeruma          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,13 @@ char	*line_assembly(char *buffer, int fd, char *line, int size_line)
 			counter = line_cat(line, buffer, counter, read_count);
 			return (line);
 		}
-		if (counter >= (size_line - BUFFER_SIZE) && *buffer != 0)
+		if (counter >= (size_line - BUFFER_SIZE))
 			line = line_dup(line, &size_line);
 		if (!line)
 			return (NULL);
 	}
-	return (line_cat(line, buffer, counter, ft_strlen(buffer)), line);
+	line_cat(line, buffer, counter, ft_strlen(buffer));
+	return (line);
 }
 
 /**
